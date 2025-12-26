@@ -15,9 +15,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "patients", indexes = {
-        @Index(name = "idx_tenant_id", columnList = "tenant_id"),
-        @Index(name = "idx_tenant_status", columnList = "tenant_id, status"),
-        @Index(name = "idx_tenant_curp", columnList = "tenant_id, curp")
+        @Index(name = "idx_tenant_code", columnList = "tenant_code"),
+        @Index(name = "idx_tenant_status", columnList = "tenant_code, status"),
+        @Index(name = "idx_tenant_curp", columnList = "tenant_code, curp")
 })
 @Getter
 @Setter
@@ -30,8 +30,8 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    @Column(name = "tenant_code", nullable = false)
+    private String tenantCode;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;

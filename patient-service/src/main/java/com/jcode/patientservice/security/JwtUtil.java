@@ -2,13 +2,13 @@ package com.jcode.patientservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,13 +27,18 @@ public class JwtUtil {
     @Value("${security.jwt.audience}")
     private String audience;
 
+    private static final String CLAIM_TENANT_ID = "tenant_id";
+    private static final String CLAIM_ROLES = "roles";
+
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        try {
+            byte[] keyBytes = Decoders.BASE64.decode(secret);
+            return Keys.hmacShaKeyFor(keyBytes);
+        } catch (IllegalArgumentException ex) {
+            return Keys.hmacShaKeyFor(secret.getBytes());
+        }
     }
 
-    /**
-     * Extraer todos los claims del token
-     */
     public Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -44,63 +49,41 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    /**
-     * Extraer un claim específico
-     */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    /**
-     * Extraer el subject (userId)
-     */
     public UUID extractUserId(String token) {
         String sub = extractClaim(token, Claims::getSubject);
         return UUID.fromString(sub);
     }
 
-    /**
-     * Extraer el tenantId
-     */
-    public UUID extractTenantId(String token) {
+    public String extractTenantCode(String token) {
         Claims claims = extractAllClaims(token);
-        String tenantId = claims.get("tenantId", String.class);
-        return UUID.fromString(tenantId);
+        return claims.get(CLAIM_TENANT_ID, String.class);
     }
 
-    /**
-     * Extraer roles
-     */
     @SuppressWarnings("unchecked")
     public List<String> extractRoles(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("roles", List.class);
+        return claims.get(CLAIM_ROLES, List.class);
     }
 
-    /**
-     * Extraer fecha de expiración
-     */
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    /**
-     * Verificar si el token ha expirado
-     */
     public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    /**
-     * Validar token
-     */
     public Boolean validateToken(String token) {
         try {
             extractAllClaims(token);
             return !isTokenExpired(token);
         } catch (Exception e) {
-            log.error("Error validando token: {}", e.getMessage());
+            log.error("Error validando token: {}", e.getMessage(), e);
             return false;
         }
     }

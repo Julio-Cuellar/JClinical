@@ -49,7 +49,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         var authorities = roles.stream()
                 .map(roleName -> {
-                    // para roles clásicos de Spring Security se recomienda prefijo ROLE_
                     if (!roleName.startsWith("ROLE_") && !roleName.startsWith("TENANT_")) {
                         return "ROLE_" + roleName;
                     }
@@ -60,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
-                        userId.toString(), // principal
+                        userId.toString(),
                         null,
                         authorities
                 );

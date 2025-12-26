@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             String jwt = authHeader.substring(7);
 
-            // Validar token
             if (!jwtUtil.validateToken(jwt)) {
                 log.warn("Invalid JWT token");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -49,22 +48,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            // Extraer información del token
             UUID userId = jwtUtil.extractUserId(jwt);
-            UUID tenantId = jwtUtil.extractTenantId(jwt);
+            String tenantCode = jwtUtil.extractTenantCode(jwt);
             List<String> roles = jwtUtil.extractRoles(jwt);
 
-            log.debug("JWT validated - userId: {}, tenantId: {}, roles: {}",
-                    userId, tenantId, roles);
+            log.debug("JWT validated - userId: {}, tenantCode: {}, roles: {}",
+                    userId, tenantCode, roles);
 
-            // Agregar headers internos para que el controlador los use
+            // Atributos internos para el controlador/servicio
             request.setAttribute("X-User-Id", userId);
-            request.setAttribute("X-Tenant-Id", tenantId);
+            request.setAttribute("X-Tenant-Code", tenantCode);
             request.setAttribute("X-Roles", String.join(",", roles));
 
-            // Crear autenticación de Spring Security
             List<SimpleGrantedAuthority> authorities = roles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                    .map(role -> {
+                        if (!role.startsWith("ROLE_") && !role.startsWith("TENANT_")) {
+                            return "ROLE_" + role;
+                        }
+                        return role;
+                    })
+                    .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
             UsernamePasswordAuthenticationToken authentication =

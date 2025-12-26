@@ -13,37 +13,43 @@ import java.util.UUID;
 @Repository
 public interface PatientDoctorRepository extends JpaRepository<PatientDoctor, UUID> {
 
-    // Buscar todas las relaciones de un paciente en un tenant
-    List<PatientDoctor> findByPatientIdAndTenantId(UUID patientId, UUID tenantId);
+    // Relaciones de un paciente en un tenant
+    List<PatientDoctor> findByPatientIdAndTenantCode(UUID patientId, String tenantCode);
 
-    // Buscar todos los pacientes de un doctor en un tenant
-    List<PatientDoctor> findByDoctorUserIdAndTenantId(UUID doctorUserId, UUID tenantId);
+    // Pacientes de un doctor en un tenant
+    List<PatientDoctor> findByDoctorUserIdAndTenantCode(UUID doctorUserId, String tenantCode);
 
-    // Verificar si existe relación entre doctor y paciente
-    boolean existsByPatientIdAndDoctorUserIdAndTenantId(UUID patientId, UUID doctorUserId, UUID tenantId);
+    // Verificar relación doctor-paciente
+    boolean existsByPatientIdAndDoctorUserIdAndTenantCode(UUID patientId,
+                                                          UUID doctorUserId,
+                                                          String tenantCode);
 
-    // Buscar relación específica
-    Optional<PatientDoctor> findByPatientIdAndDoctorUserIdAndTenantId(
-            UUID patientId, UUID doctorUserId, UUID tenantId);
+    // Relación específica
+    Optional<PatientDoctor> findByPatientIdAndDoctorUserIdAndTenantCode(UUID patientId,
+                                                                        UUID doctorUserId,
+                                                                        String tenantCode);
 
-    // Buscar el médico principal de un paciente
-    @Query("SELECT pd FROM PatientDoctor pd WHERE pd.patient.id = :patientId " +
-            "AND pd.tenantId = :tenantId AND pd.isPrimary = true")
+    // Médico principal de un paciente
+    @Query("SELECT pd FROM PatientDoctor pd " +
+            "WHERE pd.patient.id = :patientId " +
+            "AND pd.tenantCode = :tenantCode " +
+            "AND pd.isPrimary = true")
     Optional<PatientDoctor> findPrimaryDoctorForPatient(@Param("patientId") UUID patientId,
-                                                        @Param("tenantId") UUID tenantId);
+                                                        @Param("tenantCode") String tenantCode);
 
-    // Obtener IDs de pacientes de un doctor (para filtrado)
-    @Query("SELECT pd.patient.id FROM PatientDoctor pd WHERE pd.doctorUserId = :doctorUserId " +
-            "AND pd.tenantId = :tenantId")
-    List<UUID> findPatientIdsByDoctorAndTenant(@Param("doctorUserId") UUID doctorUserId,
-                                               @Param("tenantId") UUID tenantId);
+    // IDs de pacientes de un doctor (para filtrado)
+    @Query("SELECT pd.patient.id FROM PatientDoctor pd " +
+            "WHERE pd.doctorUserId = :doctorUserId " +
+            "AND pd.tenantCode = :tenantCode")
+    List<UUID> findPatientIdsByDoctorAndTenantCode(@Param("doctorUserId") UUID doctorUserId,
+                                                   @Param("tenantCode") String tenantCode);
 
-    // Eliminar todas las relaciones de un paciente (para cleanup)
-    void deleteByPatientIdAndTenantId(UUID patientId, UUID tenantId);
+    // Eliminar relaciones de un paciente
+    void deleteByPatientIdAndTenantCode(UUID patientId, String tenantCode);
 
-    // Contar cuántos médicos tiene asignados un paciente
-    long countByPatientIdAndTenantId(UUID patientId, UUID tenantId);
+    // Contar médicos asignados a un paciente
+    long countByPatientIdAndTenantCode(UUID patientId, String tenantCode);
 
-    // Contar cuántos pacientes tiene un doctor
-    long countByDoctorUserIdAndTenantId(UUID doctorUserId, UUID tenantId);
+    // Contar pacientes de un doctor
+    long countByDoctorUserIdAndTenantCode(UUID doctorUserId, String tenantCode);
 }

@@ -44,7 +44,7 @@ public class PatientMapper {
 
         return PatientResponseDTO.builder()
                 .id(patient.getId())
-                .tenantId(patient.getTenantId())
+                .tenantCode(patient.getTenantCode())     // antes tenantId
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
                 .middleName(patient.getMiddleName())

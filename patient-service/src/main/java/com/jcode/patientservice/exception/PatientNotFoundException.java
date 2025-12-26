@@ -8,8 +8,8 @@ public class PatientNotFoundException extends RuntimeException {
         super("Paciente no encontrado con ID: " + patientId);
     }
 
-    public PatientNotFoundException(UUID patientId, UUID tenantId) {
-        super("Paciente con ID: " + patientId + " no encontrado en el tenant: " + tenantId);
+    public PatientNotFoundException(UUID patientId, String tenantCode) {
+        super("Paciente con ID: " + patientId + " no encontrado en el tenant: " + tenantCode);
     }
 
     public PatientNotFoundException(String message) {

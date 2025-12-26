@@ -1,12 +1,12 @@
-package com.jcode.patientservice.dto;
+package com.jcode.patientservice.event;
 
 import com.jcode.patientservice.domain.enums.PatientSex;
-import com.jcode.patientservice.domain.enums.PatientStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,10 +15,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PatientResponseDTO {
+public class PatientCreatedEvent implements Serializable {
 
-    private UUID id;
+    private UUID patientId;
+
     private String tenantCode;
+
     private String firstName;
     private String lastName;
     private String middleName;
@@ -27,17 +29,8 @@ public class PatientResponseDTO {
     private String curp;
     private String phone;
     private String email;
-    private String addressLine1;
-    private String addressLine2;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String country;
-    private PatientStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private UUID createdByUserId;
-
-    private Integer age;
-    private String fullName;
+    private UUID primaryDoctorUserId;
+    private LocalDateTime timestamp;
+    private String eventType = "PATIENT_CREATED";
 }

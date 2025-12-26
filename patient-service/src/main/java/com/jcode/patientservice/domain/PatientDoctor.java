@@ -11,12 +11,12 @@ import java.util.UUID;
 @Table(name = "patient_doctors",
         uniqueConstraints = @UniqueConstraint(
                 name = "uk_tenant_patient_doctor",
-                columnNames = {"tenant_id", "patient_id", "doctor_user_id"}
+                columnNames = {"tenant_code", "patient_id", "doctor_user_id"}
         ),
         indexes = {
-                @Index(name = "idx_pd_tenant_patient", columnList = "tenant_id, patient_id"),
-                @Index(name = "idx_pd_tenant_doctor", columnList = "tenant_id, doctor_user_id"),
-                @Index(name = "idx_pd_tenant_primary", columnList = "tenant_id, is_primary")
+                @Index(name = "idx_pd_tenant_patient", columnList = "tenant_code, patient_id"),
+                @Index(name = "idx_pd_tenant_doctor", columnList = "tenant_code, doctor_user_id"),
+                @Index(name = "idx_pd_tenant_primary", columnList = "tenant_code, is_primary")
         }
 )
 @Getter
@@ -30,8 +30,8 @@ public class PatientDoctor {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "tenant_id", nullable = false)
-    private UUID tenantId;
+    @Column(name = "tenant_code", nullable = false)
+    private String tenantCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)

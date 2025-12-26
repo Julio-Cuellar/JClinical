@@ -9,6 +9,7 @@ import com.jcode.authidentityservice.security.JwtTokenService;
 import com.jcode.authidentityservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -113,14 +114,14 @@ public class AuthServiceImpl implements AuthService {
             case MEDICO -> roleName = "DOCTOR";
             case PERSONAL_SALUD -> roleName = "ASISTENTE";
             case PACIENTE -> roleName = "PACIENTE";
-            case ADMIN -> roleName = "ADMIN_PLATAFORMA";
+            case ADMIN -> roleName = "ADMINPLATAFORMA";
             default -> throw new IllegalStateException("Tipo de usuario no soportado: " + userType);
         }
         return roleRepository.findByName(roleName)
                 .orElseThrow(() -> new IllegalStateException("Rol por defecto no configurado: " + roleName));
     }
 
-    // ---- Creación de usuario dentro del tenant actual (admin) ----
+    // ---- Creación de usuario dentro del tenant actual (admin/owner) ----
 
     @Override
     public UserResponse createUserInCurrentTenant(CreateTenantUserRequest request) {
@@ -132,9 +133,34 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Email ya está en uso");
         }
 
+        // Validar permisos del usuario actual (además de @PreAuthorize)
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new IllegalStateException("No hay usuario autenticado en el contexto de seguridad");
+        }
+
+        String currentUsername = auth.getName();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+        boolean hasAdminRole = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(a ->
+                        a.equals("ROLE_ADMINPLATAFORMA") ||   // admin global
+                                a.equals("ROLE_DOCTOR") ||            // owner actual (primer médico)
+                                a.equals("TENANT_OWNER")              // como viene hoy del token
+                );
+
+        if (!hasAdminRole) {
+            throw new IllegalStateException(
+                    "Usuario " + currentUsername +
+                            " no tiene permisos para crear usuarios en su tenant. Authorities actuales: " +
+                            authorities
+            );
+        }
+
         String tenantCode = getCurrentTenantCode();
         Tenant tenant = tenantRepository.findByCode(tenantCode)
-                .orElseThrow(() -> new IllegalStateException("Tenant no encontrado para el usuario actual"));
+                .orElseThrow(() -> new IllegalStateException("Tenant no encontrado para el usuario actual: " + tenantCode));
 
         Instant now = Instant.now();
 
@@ -164,11 +190,10 @@ public class AuthServiceImpl implements AuthService {
         if (request.getTenantRole() != null && !request.getTenantRole().isBlank()) {
             tenantRole = TenantRole.valueOf(request.getTenantRole());
         } else {
-            // por defecto, si es médico → DOCTOR_ASOCIADO, si es personal de salud → ASISTENTE
             tenantRole = switch (userType) {
                 case MEDICO -> TenantRole.DOCTOR_ASOCIADO;
                 case PERSONAL_SALUD -> TenantRole.ASISTENTE;
-                case PACIENTE -> TenantRole.DOCTOR_ASOCIADO; // o algún rol específico si luego lo defines
+                case PACIENTE -> TenantRole.DOCTOR_ASOCIADO;
                 case ADMIN -> TenantRole.ADMIN_CONSULTORIO;
             };
         }

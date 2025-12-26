@@ -5,13 +5,12 @@ import com.jcode.patientservice.dto.PatientResponseDTO;
 import com.jcode.patientservice.dto.PatientSummaryDTO;
 import com.jcode.patientservice.dto.PatientUpdateDTO;
 import com.jcode.patientservice.service.PatientService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,130 +24,121 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    /**
-     * Crear un nuevo paciente
-     * POST /api/patients
-     */
     @PostMapping
     public ResponseEntity<PatientResponseDTO> createPatient(
             @Valid @RequestBody PatientRequestDTO requestDTO,
-            @RequestHeader("X-Tenant-Id") UUID tenantId,
-            @RequestHeader("X-User-Id") UUID userId) {
+            HttpServletRequest httpRequest) {
 
-        log.info("POST /api/patients - Creando paciente en tenant: {}", tenantId);
+        UUID userId = (UUID) httpRequest.getAttribute("X-User-Id");
+        String tenantCode = (String) httpRequest.getAttribute("X-Tenant-Code");
 
-        PatientResponseDTO response = patientService.createPatient(requestDTO, tenantId, userId);
+        log.info("POST /api/patients - Creando paciente en tenant: {} por usuario: {}",
+                tenantCode, userId);
 
+        PatientResponseDTO response = patientService.createPatient(requestDTO, tenantCode, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    /**
-     * Obtener paciente por ID
-     * GET /api/patients/{id}
-     */
     @GetMapping("/{id}")
     public ResponseEntity<PatientResponseDTO> getPatientById(
             @PathVariable UUID id,
-            @RequestHeader("X-Tenant-Id") UUID tenantId,
-            @RequestHeader("X-User-Id") UUID userId,
-            @RequestHeader("X-Roles") String rolesHeader) {
+            HttpServletRequest httpRequest) {
 
-        log.info("GET /api/patients/{} - tenant: {}", id, tenantId);
+        UUID userId = (UUID) httpRequest.getAttribute("X-User-Id");
+        String tenantCode = (String) httpRequest.getAttribute("X-Tenant-Code");
+        String rolesHeader = (String) httpRequest.getAttribute("X-Roles");
+        List<String> roles = rolesHeader != null && !rolesHeader.isBlank()
+                ? List.of(rolesHeader.split(","))
+                : List.of();
 
-        List<String> roles = List.of(rolesHeader.split(","));
-        PatientResponseDTO response = patientService.getPatientById(id, tenantId, userId, roles);
+        log.info("GET /api/patients/{} - tenant: {} usuario: {}", id, tenantCode, userId);
 
+        PatientResponseDTO response = patientService.getPatientById(id, tenantCode, userId, roles);
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Obtener todos los pacientes (según rol del usuario)
-     * GET /api/patients
-     */
     @GetMapping
-    public ResponseEntity<List<PatientSummaryDTO>> getAllPatients(
-            @RequestHeader("X-Tenant-Id") UUID tenantId,
-            @RequestHeader("X-User-Id") UUID userId,
-            @RequestHeader("X-Roles") String rolesHeader) {
+    public ResponseEntity<List<PatientSummaryDTO>> getAllPatients(HttpServletRequest httpRequest) {
 
-        log.info("GET /api/patients - tenant: {} usuario: {}", tenantId, userId);
+        UUID userId = (UUID) httpRequest.getAttribute("X-User-Id");
+        String tenantCode = (String) httpRequest.getAttribute("X-Tenant-Code");
+        String rolesHeader = (String) httpRequest.getAttribute("X-Roles");
+        List<String> roles = rolesHeader != null && !rolesHeader.isBlank()
+                ? List.of(rolesHeader.split(","))
+                : List.of();
 
-        List<String> roles = List.of(rolesHeader.split(","));
-        List<PatientSummaryDTO> patients = patientService.getAllPatients(tenantId, userId, roles);
+        log.info("GET /api/patients - tenant: {} usuario: {}", tenantCode, userId);
 
+        List<PatientSummaryDTO> patients = patientService.getAllPatients(tenantCode, userId, roles);
         return ResponseEntity.ok(patients);
     }
 
-    /**
-     * Buscar pacientes por nombre
-     * GET /api/patients/search?term=Juan
-     */
     @GetMapping("/search")
     public ResponseEntity<List<PatientSummaryDTO>> searchPatients(
             @RequestParam String term,
-            @RequestHeader("X-Tenant-Id") UUID tenantId,
-            @RequestHeader("X-User-Id") UUID userId,
-            @RequestHeader("X-Roles") String rolesHeader) {
+            HttpServletRequest httpRequest) {
 
-        log.info("GET /api/patients/search?term={} - tenant: {}", term, tenantId);
+        UUID userId = (UUID) httpRequest.getAttribute("X-User-Id");
+        String tenantCode = (String) httpRequest.getAttribute("X-Tenant-Code");
+        String rolesHeader = (String) httpRequest.getAttribute("X-Roles");
+        List<String> roles = rolesHeader != null && !rolesHeader.isBlank()
+                ? List.of(rolesHeader.split(","))
+                : List.of();
 
-        List<String> roles = List.of(rolesHeader.split(","));
-        List<PatientSummaryDTO> patients = patientService.searchPatientsByName(term, tenantId, userId, roles);
+        log.info("GET /api/patients/search?term={} - tenant: {}", term, tenantCode);
+
+        List<PatientSummaryDTO> patients =
+                patientService.searchPatientsByName(term, tenantCode, userId, roles);
 
         return ResponseEntity.ok(patients);
     }
 
-    /**
-     * Actualizar datos del paciente
-     * PUT /api/patients/{id}
-     */
     @PutMapping("/{id}")
     public ResponseEntity<PatientResponseDTO> updatePatient(
             @PathVariable UUID id,
             @Valid @RequestBody PatientUpdateDTO updateDTO,
-            @RequestHeader("X-Tenant-Id") UUID tenantId,
-            @RequestHeader("X-User-Id") UUID userId,
-            @RequestHeader("X-Roles") String rolesHeader) {
+            HttpServletRequest httpRequest) {
 
-        log.info("PUT /api/patients/{} - tenant: {}", id, tenantId);
+        UUID userId = (UUID) httpRequest.getAttribute("X-User-Id");
+        String tenantCode = (String) httpRequest.getAttribute("X-Tenant-Code");
+        String rolesHeader = (String) httpRequest.getAttribute("X-Roles");
+        List<String> roles = rolesHeader != null && !rolesHeader.isBlank()
+                ? List.of(rolesHeader.split(","))
+                : List.of();
 
-        List<String> roles = List.of(rolesHeader.split(","));
-        PatientResponseDTO response = patientService.updatePatient(id, updateDTO, tenantId, userId, roles);
+        log.info("PUT /api/patients/{} - tenant: {} usuario: {}", id, tenantCode, userId);
+
+        PatientResponseDTO response =
+                patientService.updatePatient(id, updateDTO, tenantCode, userId, roles);
 
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Desactivar paciente (baja lógica)
-     * PATCH /api/patients/{id}/deactivate
-     */
     @PatchMapping("/{id}/deactivate")
     public ResponseEntity<Void> deactivatePatient(
             @PathVariable UUID id,
-            @RequestHeader("X-Tenant-Id") UUID tenantId,
-            @RequestHeader("X-User-Id") UUID userId,
-            @RequestHeader("X-Roles") String rolesHeader) {
+            HttpServletRequest httpRequest) {
 
-        log.info("PATCH /api/patients/{}/deactivate - tenant: {}", id, tenantId);
+        UUID userId = (UUID) httpRequest.getAttribute("X-User-Id");
+        String tenantCode = (String) httpRequest.getAttribute("X-Tenant-Code");
+        String rolesHeader = (String) httpRequest.getAttribute("X-Roles");
+        List<String> roles = rolesHeader != null && !rolesHeader.isBlank()
+                ? List.of(rolesHeader.split(","))
+                : List.of();
 
-        List<String> roles = List.of(rolesHeader.split(","));
-        patientService.deactivatePatient(id, tenantId, userId, roles);
+        log.info("PATCH /api/patients/{}/deactivate - tenant: {} usuario: {}", id, tenantCode, userId);
 
+        patientService.deactivatePatient(id, tenantCode, userId, roles);
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * Obtener estadísticas de pacientes
-     * GET /api/patients/stats/count
-     */
     @GetMapping("/stats/count")
-    public ResponseEntity<Long> countActivePatients(
-            @RequestHeader("X-Tenant-Id") UUID tenantId) {
+    public ResponseEntity<Long> countActivePatients(HttpServletRequest httpRequest) {
 
-        log.info("GET /api/patients/stats/count - tenant: {}", tenantId);
+        String tenantCode = (String) httpRequest.getAttribute("X-Tenant-Code");
+        log.info("GET /api/patients/stats/count - tenant: {}", tenantCode);
 
-        long count = patientService.countActivePatients(tenantId);
-
+        long count = patientService.countActivePatients(tenantCode);
         return ResponseEntity.ok(count);
     }
 }

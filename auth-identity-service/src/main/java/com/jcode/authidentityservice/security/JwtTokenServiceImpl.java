@@ -24,7 +24,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     private final JwtProperties jwtProperties;
 
     private SecretKey getSigningKey() {
-        // Si la secret está en Base64, la decodificamos; si no, usamos los bytes tal cual.
         try {
             byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
             return Keys.hmacShaKeyFor(keyBytes);
@@ -60,7 +59,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
             parseClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException ex) {
-            // firma inválida, token expirado, mal formado, etc.
             return false;
         }
     }
