@@ -1,25 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.jcode.jclinical.infrastructure.ui.GestorPlantillasController">
-    <center>
-        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 30px; -fx-background-color: #F0F6F8;">
-            <Label text="Gestor de Plantillas Base" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
+            fx:controller="com.jcode.jclinical.infrastructure.ui.GestorPlantillasController"
+            styleClass="lista-root">
 
-            <ListView fx:id="listViewPlantillas" VBox.vgrow="ALWAYS" style="-fx-background-radius: 8px; -fx-border-radius: 8px;" />
+    <stylesheets>
+        <URL value="@../css/lienzo.css" />
+    </stylesheets>
 
-            <HBox spacing="15" alignment="CENTER_LEFT">
-                <Button fx:id="btnCrear" text="➕ Crear Nueva" style="-fx-background-color: #4A8A9C; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-background-radius: 6px; -fx-cursor: hand;" />
-                <Button fx:id="btnEditar" text="✏ Editar" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
-                <Button fx:id="btnDuplicar" text="📄 Duplicar" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
-                <Button fx:id="btnEliminar" text="🗑 Eliminar" style="-fx-text-fill: #E74C3C; -fx-padding: 8px 15px; -fx-cursor: hand;" />
-
-                <Region HBox.hgrow="ALWAYS" />
-
-                <Button fx:id="btnVolver" text="⬅ Volver al Dashboard" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
+    <top>
+        <VBox styleClass="lista-header">
+            <HBox spacing="14" alignment="CENTER_LEFT">
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label text="📑  Gestor de Plantillas" styleClass="lista-titulo" />
+                    <Label text="Crea y administra plantillas reutilizables para expedientes clínicos"
+                           styleClass="lista-subtitulo" />
+                </VBox>
+                <Button fx:id="btnVolver" text="⬅  Volver" styleClass="btn-secundario" />
             </HBox>
         </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="12" style="-fx-padding: 20 28 20 28; -fx-background-color: #EEF8F8;">
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Plantillas disponibles"
+                       style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2D5F5F;" />
+                <Label text="• Doble clic para editar" styleClass="shortcut-hint" />
+            </HBox>
+
+            <ListView fx:id="listViewPlantillas" VBox.vgrow="ALWAYS"
+                      styleClass="lista-view" style="-fx-pref-height: 380px;" />
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="btnCrear"    text="➕  Crear Nueva"   styleClass="btn-primario" />
+                <Button fx:id="btnEditar"   text="✏  Editar"         styleClass="btn-secundario" />
+                <Button fx:id="btnDuplicar" text="📄  Duplicar"       styleClass="btn-secundario" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnEliminar" text="🗑  Eliminar"       styleClass="btn-peligro" />
+            </HBox>
+
+            <Label text="Ctrl+N: Nueva  |  Enter: Editar  |  Ctrl+D: Duplicar  |  Supr: Eliminar"
+                   styleClass="shortcut-hint" style="-fx-alignment: CENTER_RIGHT; -fx-max-width: infinity;" />
+        </VBox>
     </center>
+
 </BorderPane>

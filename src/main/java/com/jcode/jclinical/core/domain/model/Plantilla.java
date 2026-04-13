@@ -4,7 +4,8 @@ import com.jcode.jclinical.core.domain.exception.PlantillaInvalidaException;
 
 import java.util.UUID;
 
-public class Plantilla {
+public class
+Plantilla {
     private final UUID id;
     private String nombre;
     private String layoutJson;

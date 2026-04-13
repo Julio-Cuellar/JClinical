@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.jcode.jclinical.infrastructure.ui.ListaExpedientesController">
+            fx:controller="com.jcode.jclinical.infrastructure.ui.ListaExpedientesController"
+            styleClass="lista-root">
+
+    <stylesheets>
+        <URL value="@../css/lienzo.css" />
+    </stylesheets>
+
+    <top>
+        <VBox styleClass="lista-header">
+            <HBox spacing="14" alignment="CENTER_LEFT">
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label text="🦷  JClinical" styleClass="lista-titulo" />
+                    <Label text="Directorio de Expedientes Clínicos — Gestión Estomatológica Digital"
+                           styleClass="lista-subtitulo" />
+                </VBox>
+                <Button fx:id="btnGestorPlantillas" text="📑  Plantillas"
+                        styleClass="btn-secundario" />
+                <Button fx:id="btnNuevo" text="➕  Nuevo Expediente"
+                        styleClass="btn-primario" />
+            </HBox>
+        </VBox>
+    </top>
+
     <center>
-        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 30px; -fx-background-color: #F0F6F8;">
-            <HBox spacing="15" alignment="CENTER_LEFT">
-                <Label text="Directorio de Expedientes Clínicos" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnGestorPlantillas" text="📑 Gestor de Plantillas" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
-                <Button fx:id="btnNuevo" text="➕ Nuevo Expediente" style="-fx-background-color: #4A8A9C; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-background-radius: 6px; -fx-cursor: hand;" />
+        <VBox spacing="12" style="-fx-padding: 20 28 20 28; -fx-background-color: #EEF8F8;">
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Expedientes" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2D5F5F;" />
+                <Label text="• Doble clic para abrir  •  Clic derecho para opciones  •  Del para eliminar seleccionado"
+                       styleClass="shortcut-hint" />
             </HBox>
 
-            <Label text="Haz doble clic sobre un expediente de la lista para abrir su lienzo." textFill="#7f8c8d" />
+            <ListView fx:id="listViewExpedientes" VBox.vgrow="ALWAYS"
+                      styleClass="lista-view" style="-fx-pref-height: 420px;" />
 
-            <ListView fx:id="listViewExpedientes" VBox.vgrow="ALWAYS" style="-fx-background-radius: 8px; -fx-border-radius: 8px;" />
+            <HBox spacing="8" alignment="CENTER_RIGHT">
+                <Label text="Ctrl+N: Nuevo  |  Ctrl+P: Plantillas  |  Enter: Abrir  |  Supr: Eliminar"
+                       styleClass="shortcut-hint" />
+            </HBox>
         </VBox>
     </center>
+
 </BorderPane>
