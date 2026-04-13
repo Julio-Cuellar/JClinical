@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.jcode.jclinical.infrastructure.ui.ListaExpedientesController">
+    <center>
+        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 30px; -fx-background-color: #F0F6F8;">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Directorio de Expedientes Clínicos" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnGestorPlantillas" text="📑 Gestor de Plantillas" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
+                <Button fx:id="btnNuevo" text="➕ Nuevo Expediente" style="-fx-background-color: #4A8A9C; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-background-radius: 6px; -fx-cursor: hand;" />
+            </HBox>
+
+            <Label text="Haz doble clic sobre un expediente de la lista para abrir su lienzo." textFill="#7f8c8d" />
+
+            <ListView fx:id="listViewExpedientes" VBox.vgrow="ALWAYS" style="-fx-background-radius: 8px; -fx-border-radius: 8px;" />
+        </VBox>
+    </center>
+</BorderPane>

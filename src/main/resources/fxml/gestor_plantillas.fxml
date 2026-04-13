@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.jcode.jclinical.infrastructure.ui.GestorPlantillasController">
+    <center>
+        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 30px; -fx-background-color: #F0F6F8;">
+            <Label text="Gestor de Plantillas Base" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
+
+            <ListView fx:id="listViewPlantillas" VBox.vgrow="ALWAYS" style="-fx-background-radius: 8px; -fx-border-radius: 8px;" />
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Button fx:id="btnCrear" text="➕ Crear Nueva" style="-fx-background-color: #4A8A9C; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 15px; -fx-background-radius: 6px; -fx-cursor: hand;" />
+                <Button fx:id="btnEditar" text="✏ Editar" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
+                <Button fx:id="btnDuplicar" text="📄 Duplicar" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
+                <Button fx:id="btnEliminar" text="🗑 Eliminar" style="-fx-text-fill: #E74C3C; -fx-padding: 8px 15px; -fx-cursor: hand;" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button fx:id="btnVolver" text="⬅ Volver al Dashboard" style="-fx-padding: 8px 15px; -fx-cursor: hand;" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

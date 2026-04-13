@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.jcode.jclinical.infrastructure.ui.LienzoDinamicoController">
+
+    <stylesheets>
+        <URL value="@../css/lienzo.css" />
+    </stylesheets>
+
+    <left>
+        <ScrollPane hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background-color: #F8FAFB; -fx-border-color: transparent;">
+            <content>
+                <VBox styleClass="toolbox" prefWidth="220" spacing="8" style="-fx-padding: 15;">
+                    <Label text="Herramientas" styleClass="toolbox-title" />
+
+                    <Label fx:id="toolTitulo" text="T   Título" styleClass="tool-item" />
+                    <Label fx:id="toolTextoCorto" text="✍   Texto Corto" styleClass="tool-item" />
+                    <Label fx:id="toolImagen" text="📷   Imagen / Rx" styleClass="tool-item" />
+                    <Label fx:id="toolTabla" text="🧮   Tabla Dinámica" styleClass="tool-item" />
+                    <Label fx:id="toolOdontograma" text="🦷   Odontograma" styleClass="tool-item" />
+
+                    <Separator />
+
+                    <Label text="Plantillas Rápidas" styleClass="toolbox-title" style="-fx-font-size: 14px;" />
+                    <Label fx:id="toolAntecedentes" text="📋   Antecedentes" styleClass="tool-item" style="-fx-background-color: #E2F1F4;" />
+                    <Label fx:id="toolContacto" text="☎   Contacto" styleClass="tool-item" style="-fx-background-color: #E2F1F4;" />
+                </VBox>
+            </content>
+        </ScrollPane>
+    </left>
+
+    <center>
+        <ScrollPane hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED" style="-fx-background-color: #D1D8DB;" fitToWidth="true">
+            <content>
+                <StackPane style="-fx-padding: 40; -fx-background-color: #D1D8DB;">
+                    <Pane fx:id="lienzoCarta" styleClass="lienzo-carta"
+                          minWidth="800" prefWidth="800" maxWidth="800"
+                          minHeight="1100" prefHeight="1100"
+                          style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0, 0, 0);" />
+                </StackPane>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10; -fx-background-color: white; -fx-border-color: #D5DBDB; -fx-border-width: 1 0 0 0;">
+            <Button fx:id="btnVolver" text="⬅ Volver" styleClass="btn-volver" style="-fx-cursor: hand;" />
+            <Separator orientation="VERTICAL" />
+
+            <HBox spacing="10" alignment="CENTER">
+                <Button fx:id="btnPaginaPrevia" text="◀" style="-fx-cursor: hand;" />
+                <Label fx:id="lblContadorPaginas" text="Página 1 de 1" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-min-width: 100; -fx-alignment: center;" />
+                <Button fx:id="btnPaginaSiguiente" text="▶" style="-fx-cursor: hand;" />
+                <Button fx:id="btnAgregarPagina" text="+ Añadir Página" style="-fx-background-color: #A8DADC; -fx-text-fill: #1D3557; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 5;" />
+            </HBox>
+
+            <Separator orientation="VERTICAL" />
+
+            <Label text="Paciente:" style="-fx-font-weight: bold; -fx-text-fill: #7F8C8D;" />
+            <TextField fx:id="txtNombreExpediente" promptText="Ej. Juan Pérez" prefWidth="220" styleClass="input-texto" />
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Label fx:id="lblEstado" text="Listo" textFill="#999999" style="-fx-font-style: italic;" />
+            <Button fx:id="btnGuardar" text="💾 Guardar Cambios" styleClass="btn-guardar" style="-fx-cursor: hand;" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
