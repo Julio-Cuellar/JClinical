@@ -1,0 +1,612 @@
+/* ═══════════════════════════════════════════════════════════
+   JClinical — Tema Pastel: Azul Turquesa + Verde Menta + Blanco
+   Paleta:
+     Turquesa    #7ECECE  (base)  |  #5BBDBD (hover)  |  #B3E5E5 (claro)  |  #E0F5F5 (muy claro)
+     Menta       #A8E6CF  (base)  |  #72C9A8 (hover)  |  #D4F1E4 (claro)  |  #F0FAF5 (muy claro)
+     Blanco      #FFFFFF
+     Fondo       #EEF8F8
+     Texto       #2D5F5F (oscuro) |  #5B9494 (medio)  |  #8FBBBB (suave)
+     Borde       #B5DEDE
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── FONDO GENERAL ─────────────────────────────────────────── */
+.root {
+    -fx-background-color: #EEF8F8;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: #EEF8F8;
+}
+.scroll-pane > .viewport { -fx-background-color: transparent; }
+
+/* ── LIENZO DE TRABAJO ──────────────────────────────────────── */
+.lienzo-carta {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(94,189,189,0.22), 28, 0.3, 0, 6);
+    -fx-min-width: 816px; -fx-min-height: 1056px;
+    -fx-max-width: 816px; -fx-max-height: 1056px;
+}
+
+/* ── BARRA LATERAL HERRAMIENTAS ─────────────────────────────── */
+.toolbox {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 18 12 18 12;
+    -fx-spacing: 6;
+}
+
+.toolbox-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2D5F5F;
+    -fx-padding: 6 0 2 2;
+}
+
+.toolbox-section {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8FBBBB;
+    -fx-padding: 8 0 2 4;
+    -fx-letter-spacing: 1px;
+}
+
+.tool-item {
+    -fx-background-color: #F0FAFA;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 1px;
+    -fx-text-fill: #2D5F5F;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 9px 12px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-max-width: infinity;
+    -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 6;
+}
+.tool-item:hover {
+    -fx-background-color: #D4F1E4;
+    -fx-border-color: #72C9A8;
+    -fx-text-fill: #2D5F5F;
+    -fx-effect: dropshadow(gaussian, rgba(114,201,168,0.2), 4, 0.1, 0, 1);
+}
+
+.tool-item-menta {
+    -fx-background-color: #EBF9F4;
+    -fx-border-color: #A8E6CF;
+}
+.tool-item-menta:hover {
+    -fx-background-color: #C8F0E0;
+    -fx-border-color: #72C9A8;
+}
+
+.tool-item-nom {
+    -fx-background-color: #E0F5F5;
+    -fx-border-color: #7ECECE;
+    -fx-border-width: 1.5px;
+}
+.tool-item-nom:hover {
+    -fx-background-color: #B3E5E5;
+    -fx-border-color: #5BBDBD;
+}
+
+/* ── BARRA DE ESTADO (BOTTOM) ───────────────────────────────── */
+.status-bar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10 20 10 20;
+    -fx-alignment: center-left;
+    -fx-spacing: 12;
+}
+
+.btn-guardar {
+    -fx-background-color: #7ECECE;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 9px 20px;
+    -fx-background-radius: 9px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(94,189,189,0.35), 5, 0.2, 0, 2);
+}
+.btn-guardar:hover {
+    -fx-background-color: #5BBDBD;
+    -fx-effect: dropshadow(gaussian, rgba(94,189,189,0.5), 7, 0.3, 0, 2);
+}
+.btn-guardar:pressed { -fx-background-color: #4AADAD; }
+
+.btn-volver {
+    -fx-background-color: transparent;
+    -fx-text-fill: #5B9494;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 14px;
+}
+.btn-volver:hover {
+    -fx-background-color: #E0F5F5;
+    -fx-text-fill: #2D5F5F;
+    -fx-border-color: #7ECECE;
+}
+
+.btn-pagina {
+    -fx-background-color: #F0FAFA;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+    -fx-cursor: hand;
+    -fx-padding: 7px 14px;
+    -fx-text-fill: #2D5F5F;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+.btn-pagina:hover { -fx-background-color: #D4F1E4; -fx-border-color: #72C9A8; }
+.btn-pagina:disabled { -fx-opacity: 0.35; }
+
+.btn-agregar-pagina {
+    -fx-background-color: #A8E6CF;
+    -fx-text-fill: #2D5F5F;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+    -fx-padding: 7px 13px;
+    -fx-border-color: #72C9A8;
+    -fx-border-width: 1px;
+}
+.btn-agregar-pagina:hover { -fx-background-color: #72C9A8; -fx-text-fill: white; }
+
+.lbl-pagina {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: #2D5F5F;
+    -fx-min-width: 110px;
+    -fx-alignment: center;
+}
+
+/* ── ELEMENTOS BÁSICOS DEL LIENZO ───────────────────────────── */
+.input-titulo {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D5F5F;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #7ECECE transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 4px 2px 6px 2px;
+    -fx-prompt-text-fill: #8FBBBB;
+}
+.input-titulo:focused {
+    -fx-border-color: transparent transparent #5BBDBD transparent;
+}
+
+.input-texto {
+    -fx-background-color: #F8FEFE;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 10px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D5F5F;
+    -fx-prompt-text-fill: #8FBBBB;
+}
+.input-texto:focused { -fx-border-color: #7ECECE; }
+
+.input-texto-largo {
+    -fx-background-color: #F8FEFE;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 10px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D5F5F;
+    -fx-prompt-text-fill: #8FBBBB;
+}
+.input-texto-largo:focused { -fx-border-color: #7ECECE; }
+
+/* ── SEPARADOR DE SECCIÓN ────────────────────────────────────── */
+.separador-elemento {
+    -fx-background-color: linear-gradient(to right, transparent, #7ECECE, transparent);
+    -fx-min-height: 3px;
+    -fx-pref-height: 3px;
+    -fx-max-height: 3px;
+}
+
+/* ── ÁREA DE FIRMA ──────────────────────────────────────────── */
+.area-firma-container { -fx-background-color: transparent; -fx-padding: 0; }
+
+.area-firma-barra {
+    -fx-background-color: #E0F5F5;
+    -fx-padding: 6 10;
+    -fx-cursor: move;
+    -fx-border-radius: 8px 8px 0 0;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 1 1 0 1;
+}
+
+.area-firma-body {
+    -fx-background-color: #FAFEFE;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 0 1 1 1;
+    -fx-border-radius: 0 0 8px 8px;
+    -fx-background-radius: 0 0 8px 8px;
+    -fx-padding: 14px;
+    -fx-spacing: 6px;
+}
+
+.firma-linea {
+    -fx-border-color: #2D5F5F;
+    -fx-border-width: 0 0 1.5 0;
+    -fx-min-height: 55px;
+    -fx-pref-height: 55px;
+}
+
+.firma-etiqueta {
+    -fx-font-size: 10px;
+    -fx-text-fill: #8FBBBB;
+    -fx-alignment: CENTER;
+    -fx-max-width: infinity;
+}
+
+/* ── BOTÓN COLAPSAR/EXPANDIR (universal) ────────────────────── */
+.btn-colapsar {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-text-fill: #5B9494;
+    -fx-font-weight: bold;
+    -fx-padding: 0 6 0 4;
+    -fx-font-size: 11px;
+}
+.btn-colapsar:hover { -fx-text-fill: #2D5F5F; }
+
+/* ── TABLA DINÁMICA ─────────────────────────────────────────── */
+.tabla-container { -fx-background-color: transparent; -fx-padding: 0; }
+
+.tabla-barra {
+    -fx-background-color: #E0F5F5;
+    -fx-padding: 5 10;
+    -fx-cursor: move;
+    -fx-border-radius: 8px 8px 0 0;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 1 1 0 1;
+    -fx-spacing: 4;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.tabla-barra-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D5F5F;
+}
+
+.tabla-cuerpo {
+    -fx-background-color: #FAFEFE;
+    -fx-padding: 8;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 0 1 1 1;
+    -fx-border-radius: 0 0 8px 8px;
+    -fx-background-radius: 0 0 8px 8px;
+    -fx-spacing: 6;
+}
+
+.btn-tabla {
+    -fx-background-color: #EBF9F4;
+    -fx-text-fill: #2D5F5F;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 4px 9px;
+    -fx-border-color: #A8E6CF;
+    -fx-border-width: 1px;
+}
+.btn-tabla:hover { -fx-background-color: #72C9A8; -fx-text-fill: white; -fx-border-color: #5BBDBD; }
+
+.tabla-celda {
+    -fx-background-color: white;
+    -fx-border-color: #D4ECEC;
+    -fx-border-width: 0.5px;
+    -fx-padding: 5px 8px;
+    -fx-pref-width: 100px;
+    -fx-font-size: 12px;
+    -fx-text-fill: #2D5F5F;
+}
+.tabla-celda:focused {
+    -fx-border-color: #7ECECE;
+    -fx-background-color: #F0FAFA;
+}
+
+/* ── ODONTOGRAMA ────────────────────────────────────────────── */
+.odontograma-container { -fx-background-color: transparent; -fx-padding: 0; }
+
+.odontograma-barra {
+    -fx-background-color: #D4F1E4;
+    -fx-padding: 5 10;
+    -fx-cursor: move;
+    -fx-border-radius: 8px 8px 0 0;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-color: #A8E6CF;
+    -fx-border-width: 1 1 0 1;
+    -fx-spacing: 4;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.odontograma-barra-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D5F5F;
+}
+
+.odontograma-body {
+    -fx-background-color: #F5FCFB;
+    -fx-border-color: #A8E6CF;
+    -fx-border-width: 0 1 1 1;
+    -fx-border-radius: 0 0 8px 8px;
+    -fx-background-radius: 0 0 8px 8px;
+    -fx-padding: 12px;
+    -fx-spacing: 6px;
+    -fx-alignment: center;
+}
+
+.odontograma-fila {
+    -fx-spacing: 2;
+    -fx-alignment: CENTER;
+}
+
+.odontograma-cuadrante-label {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5B9494;
+    -fx-padding: 0 6;
+}
+
+.cuadrante-divider {
+    -fx-min-width: 2px;
+    -fx-pref-width: 2px;
+    -fx-max-width: 2px;
+    -fx-min-height: 54px;
+    -fx-background-color: #2D5F5F;
+    -fx-opacity: 0.3;
+}
+
+/* Contenedor individual de diente */
+.diente-wrapper {
+    -fx-alignment: center;
+    -fx-spacing: 1;
+}
+
+/* Cuerpo del diente */
+.diente-base {
+    -fx-min-width: 28px; -fx-min-height: 35px;
+    -fx-pref-width: 28px; -fx-pref-height: 35px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #B5DEDE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+}
+.diente-base:hover {
+    -fx-border-color: #5BBDBD;
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(gaussian, rgba(91,189,189,0.25), 4, 0.2, 0, 1);
+}
+
+/* ─ Estados del diente (estándar FDI / NOM-013) ─ */
+.estado-sano             { -fx-background-color: #FFFFFF; }
+.estado-caries           { -fx-background-color: #E74C3C; }
+.estado-amalgama         { -fx-background-color: #95A5A6; }
+.estado-resina           { -fx-background-color: #3498DB; }
+.estado-corona           { -fx-background-color: #F1C40F; -fx-border-color: #D4AC0D; -fx-border-width: 2px; }
+.estado-puente           { -fx-background-color: #F39C12; -fx-border-color: #D68910; -fx-border-width: 2px; }
+.estado-endodoncia       { -fx-background-color: #E74C3C; -fx-border-color: #922B21; -fx-border-width: 2px; }
+.estado-extraccion       { -fx-background-color: #FDFEFE; -fx-border-color: #E74C3C; -fx-border-width: 2px; }
+.estado-perdido          { -fx-background-color: #D7DBDD; -fx-border-color: #95A5A6; -fx-border-width: 1.5px; }
+.estado-implante         { -fx-background-color: #1ABC9C; -fx-border-color: #148F77; -fx-border-width: 2px; }
+.estado-protesis-fija    { -fx-background-color: #9B59B6; -fx-border-color: #7D3C98; -fx-border-width: 1.5px; }
+.estado-protesis-removible { -fx-background-color: #FDFEFE; -fx-border-color: #9B59B6; -fx-border-width: 1.5px; }
+.estado-sellador         { -fx-background-color: #A8E6CF; -fx-border-color: #72C9A8; -fx-border-width: 1.5px; }
+.estado-fractura         { -fx-background-color: #FAD7A0; -fx-border-color: #E59866; -fx-border-width: 2px; }
+.estado-erupcion         { -fx-background-color: #FEF9E7; -fx-border-color: #F7DC6F; -fx-border-width: 2px; }
+.estado-faceta           { -fx-background-color: #FADBD8; -fx-border-color: #F1948A; -fx-border-width: 1.5px; }
+.estado-movilidad        { -fx-background-color: #FDEBD0; -fx-border-color: #E59866; -fx-border-width: 2px; }
+.estado-giro             { -fx-background-color: #D7BDE2; -fx-border-color: #AF7AC5; -fx-border-width: 1.5px; }
+.estado-supernumerario   { -fx-background-color: #A9CCE3; -fx-border-color: #5DADE2; -fx-border-width: 1.5px; }
+.estado-agenesia         { -fx-background-color: #F2F3F4; -fx-border-color: #BFC9CA; -fx-border-width: 1px; }
+
+/* Número del diente */
+.diente-numero {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D5F5F;
+}
+
+/* Texto blanco para estados oscuros */
+.estado-caries .diente-numero,
+.estado-endodoncia .diente-numero,
+.estado-resina .diente-numero,
+.estado-perdido .diente-numero,
+.estado-implante .diente-numero,
+.estado-protesis-fija .diente-numero { -fx-text-fill: white; }
+
+/* Texto oscuro para estados claros/amarillos */
+.estado-corona .diente-numero,
+.estado-amalgama .diente-numero,
+.estado-puente .diente-numero { -fx-text-fill: #2D5F5F; }
+
+/* Superficies del diente (cruz: V, M, O, D, L/P) */
+.superficie-base {
+    -fx-min-width: 9px; -fx-min-height: 9px;
+    -fx-max-width: 9px; -fx-max-height: 9px;
+    -fx-pref-width: 9px; -fx-pref-height: 9px;
+    -fx-background-color: #F8FEFE;
+    -fx-border-color: #C5E0E0;
+    -fx-border-width: 0.5px;
+    -fx-cursor: hand;
+}
+.superficie-base:hover { -fx-background-color: #D4F1E4; -fx-border-color: #72C9A8; }
+
+/* Estados de superficies */
+.sup-caries    { -fx-background-color: #E74C3C; }
+.sup-amalgama  { -fx-background-color: #95A5A6; }
+.sup-resina    { -fx-background-color: #3498DB; }
+.sup-sellador  { -fx-background-color: #A8E6CF; }
+
+/* Dientes temporales/primarios: borde punteado para diferenciar */
+.diente-temporal {
+    -fx-border-color: #72C9A8;
+    -fx-border-width: 1.5px;
+    -fx-background-color: #F0FAF5;
+}
+
+/* Etiqueta arco superior/inferior */
+.odontograma-arco-label {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8FBBBB;
+    -fx-padding: 2 8;
+}
+
+/* ── GUÍAS DE ALINEACIÓN ────────────────────────────────────── */
+.guia-visual { /* estilos aplicados programáticamente */ }
+
+/* ── HANDLE DE REDIMENSIONADO ────────────────────────────────── */
+.resize-handle { /* estilos aplicados programáticamente */ }
+
+/* ── MENÚ CONTEXTUAL ────────────────────────────────────────── */
+.context-menu {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10px;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(94,189,189,0.28), 14, 0.3, 0, 4);
+    -fx-padding: 4;
+}
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 7 16;
+    -fx-cursor: hand;
+    -fx-background-radius: 6px;
+}
+.context-menu .menu-item:hover { -fx-background-color: #EBF9F4; }
+.context-menu .menu-item .label {
+    -fx-text-fill: #2D5F5F;
+    -fx-font-size: 13px;
+}
+.context-menu .separator { -fx-padding: 2 0; }
+
+/* ── IMAGEN PLACEHOLDER ─────────────────────────────────────── */
+.image-placeholder {
+    -fx-background-color: #F0FAFA;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 20px;
+    -fx-text-fill: #5B9494;
+    -fx-font-size: 13px;
+    -fx-alignment: center;
+}
+
+/* ── PANTALLA LISTA EXPEDIENTES ─────────────────────────────── */
+.lista-root { -fx-background-color: #EEF8F8; }
+
+.lista-header {
+    -fx-background-color: linear-gradient(to bottom, #E0F5F5 0%, #EEF8F8 100%);
+    -fx-padding: 22 30 18 30;
+    -fx-border-color: transparent transparent #B5DEDE transparent;
+    -fx-border-width: 1px;
+}
+
+.lista-titulo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D5F5F;
+}
+
+.lista-subtitulo {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8FBBBB;
+    -fx-padding: 2 0 0 0;
+}
+
+.btn-primario {
+    -fx-background-color: #7ECECE;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 9px 20px;
+    -fx-background-radius: 9px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(94,189,189,0.3), 5, 0.2, 0, 2);
+}
+.btn-primario:hover { -fx-background-color: #5BBDBD; }
+.btn-primario:pressed { -fx-background-color: #4AADAD; }
+
+.btn-secundario {
+    -fx-background-color: #F0FAFA;
+    -fx-text-fill: #2D5F5F;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 9px 20px;
+    -fx-background-radius: 9px;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 9px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+.btn-secundario:hover { -fx-background-color: #E0F5F5; -fx-border-color: #7ECECE; }
+
+.btn-peligro {
+    -fx-background-color: #FDEDEC;
+    -fx-text-fill: #E74C3C;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 9px 20px;
+    -fx-background-radius: 9px;
+    -fx-border-color: #F1948A;
+    -fx-border-radius: 9px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+.btn-peligro:hover { -fx-background-color: #FADBD8; }
+
+.lista-view {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-color: #B5DEDE;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(94,189,189,0.12), 8, 0.2, 0, 2);
+}
+.lista-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 11px 16px;
+    -fx-border-color: transparent transparent #EEF8F8 transparent;
+    -fx-border-width: 1px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D5F5F;
+}
+.lista-view .list-cell:filled:hover { -fx-background-color: #F0FAFA; }
+.lista-view .list-cell:filled:selected {
+    -fx-background-color: #D4F1E4;
+    -fx-text-fill: #2D5F5F;
+}
+
+/* Hint de atajos de teclado */
+.shortcut-hint {
+    -fx-font-size: 11px;
+    -fx-text-fill: #8FBBBB;
+    -fx-font-style: italic;
+}

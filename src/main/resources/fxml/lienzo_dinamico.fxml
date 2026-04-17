@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.jcode.jclinical.infrastructure.ui.LienzoDinamicoController">
+
+    <stylesheets>
+        <URL value="@../css/lienzo.css" />
+    </stylesheets>
+
+    <!-- ══════ PANEL IZQUIERDO — HERRAMIENTAS ══════ -->
+    <left>
+        <ScrollPane hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                    style="-fx-background-color: white; -fx-border-color: transparent; -fx-padding: 0;">
+            <content>
+                <VBox styleClass="toolbox" prefWidth="210" spacing="5">
+
+                    <Label text="🔧  Herramientas" styleClass="toolbox-title" />
+
+                    <!-- ELEMENTOS BÁSICOS -->
+                    <Label text="ELEMENTOS BÁSICOS" styleClass="toolbox-section" />
+                    <Label fx:id="toolTitulo"      text="T   Título"         styleClass="tool-item" />
+                    <Label fx:id="toolTextoCorto"  text="✍   Texto Corto"    styleClass="tool-item" />
+                    <Label fx:id="toolTextoLargo"  text="📝  Texto Largo"    styleClass="tool-item" />
+                    <Label fx:id="toolImagen"      text="📷  Imagen / Rx"    styleClass="tool-item" />
+                    <Label fx:id="toolSeparador"   text="──  Separador"      styleClass="tool-item" />
+                    <Label fx:id="toolAreaFirma"   text="✒   Área de Firma"  styleClass="tool-item" />
+
+                    <Separator style="-fx-padding: 4 0;" />
+
+                    <!-- TABLAS Y DATOS -->
+                    <Label text="TABLAS Y DATOS" styleClass="toolbox-section" />
+                    <Label fx:id="toolTabla"           text="🧮  Tabla Dinámica"   styleClass="tool-item" />
+                    <Label fx:id="toolSignosVitales"   text="💊  Signos Vitales"   styleClass="tool-item tool-item-menta" />
+                    <Label fx:id="toolNotaEvolucion"   text="📋  Nota de Evolución" styleClass="tool-item tool-item-menta" />
+
+                    <Separator style="-fx-padding: 4 0;" />
+
+                    <!-- ODONTOLOGÍA -->
+                    <Label text="ODONTOLOGÍA" styleClass="toolbox-section" />
+                    <Label fx:id="toolOdontograma"         text="🦷  Odontograma Permanente"  styleClass="tool-item" />
+                    <Label fx:id="toolOdontogramaTemporal" text="🦷  Odontograma Temporal"    styleClass="tool-item tool-item-menta" />
+
+                    <Separator style="-fx-padding: 4 0;" />
+
+                    <!-- PLANTILLAS NOM -->
+                    <Label text="NORMA OFICIAL (NOM)" styleClass="toolbox-section" />
+                    <Label fx:id="toolAntecedentes"  text="📋  Antecedentes HxF"    styleClass="tool-item tool-item-nom" />
+                    <Label fx:id="toolContacto"      text="☎   Datos de Contacto"   styleClass="tool-item tool-item-nom" />
+                    <Label fx:id="btnNomTemplate"    text="📜  Historia Clínica NOM" styleClass="tool-item tool-item-nom"
+                           style="-fx-cursor: hand;" />
+
+                    <VBox VBox.vgrow="ALWAYS" />
+
+                    <!-- ATAJOS -->
+                    <Label text="Ctrl+S Guardar  |  Ctrl+Z Deshacer"    styleClass="shortcut-hint" style="-fx-padding: 0 0 2 4;" />
+                    <Label text="Ctrl+C Copiar  |  Ctrl+V Pegar"        styleClass="shortcut-hint" style="-fx-padding: 0 0 2 4;" />
+                    <Label text="Ctrl+D Duplicar  |  Supr Eliminar"     styleClass="shortcut-hint" style="-fx-padding: 0 0 6 4;" />
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </left>
+
+    <!-- ══════ CENTRO — LIENZO ══════ -->
+    <center>
+        <ScrollPane hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED"
+                    style="-fx-background-color: #D8EBEB;" fitToWidth="true">
+            <content>
+                <StackPane style="-fx-padding: 36; -fx-background-color: #D8EBEB;">
+                    <Pane fx:id="lienzoCarta" styleClass="lienzo-carta"
+                          minWidth="816" prefWidth="816" maxWidth="816"
+                          minHeight="1056" prefHeight="1056" maxHeight="1056" />
+                </StackPane>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <!-- ══════ INFERIOR — BARRA DE ESTADO ══════ -->
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT" spacing="12">
+
+            <Button fx:id="btnVolver" text="⬅  Volver" styleClass="btn-volver" />
+
+            <Separator orientation="VERTICAL" style="-fx-padding: 0 4;" />
+
+            <!-- Navegación de páginas -->
+            <HBox spacing="6" alignment="CENTER">
+                <Button fx:id="btnPaginaPrevia"    text="◀" styleClass="btn-pagina" />
+                <Label  fx:id="lblContadorPaginas" text="Página 1 de 1" styleClass="lbl-pagina" />
+                <Button fx:id="btnPaginaSiguiente" text="▶" styleClass="btn-pagina" />
+                <Button fx:id="btnAgregarPagina"   text="＋ Página" styleClass="btn-agregar-pagina" />
+            </HBox>
+
+            <Separator orientation="VERTICAL" style="-fx-padding: 0 4;" />
+
+            <Label text="Paciente:" style="-fx-font-weight: bold; -fx-text-fill: #5B9494; -fx-font-size: 12px;" />
+            <TextField fx:id="txtNombreExpediente" promptText="Ej. Juan Pérez García"
+                       prefWidth="200" styleClass="input-texto" />
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Label fx:id="lblEstado" text="Listo" style="-fx-font-style: italic; -fx-text-fill: #8FBBBB; -fx-font-size: 12px;" />
+            <Button fx:id="btnGuardar" text="💾  Guardar  (Ctrl+S)" styleClass="btn-guardar" />
+
+        </HBox>
+    </bottom>
+
+</BorderPane>
