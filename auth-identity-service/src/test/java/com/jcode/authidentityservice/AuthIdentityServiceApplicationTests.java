@@ -1,0 +1,13 @@
+package com.jcode.authidentityservice;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class AuthIdentityServiceApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
